@@ -1,30 +1,27 @@
+import { User } from 'src/users/models/user.entity';
 import {
   BaseEntity,
   Entity,
-  Unique,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
-@Unique(['email'])
-export class User extends BaseEntity {
+export class Report extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: false, type: 'varchar', length: 200 })
-  email: string;
+  identification: string;
 
-  @Column({ nullable: false, type: 'varchar', length: 200 })
-  name: string;
+  @Column({ nullable: false, type: 'varchar' })
+  description: string;
 
-  @Column({ nullable: false, type: 'varchar', length: 20 })
-  cellphone: string;
-
-  @Column({ nullable: false, default: true })
-  status: boolean;
+  @ManyToOne(() => User, (user) => user.reports)
+  user: User;
 
   @CreateDateColumn()
   createdAt: Date;

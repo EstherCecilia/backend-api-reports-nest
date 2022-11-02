@@ -7,7 +7,6 @@ import {
   Put,
   ValidationPipe,
 } from '@nestjs/common';
-import { query } from 'express';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserDto } from './dtos/get-user.dto';
 import { ReturnUserDto } from './dtos/return-user.dto';

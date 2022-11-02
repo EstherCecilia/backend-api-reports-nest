@@ -3,4 +3,5 @@ export class GetUserDto {
   email: string;
   name: string;
   cellphone: string;
+  createdAt: Date;
 }

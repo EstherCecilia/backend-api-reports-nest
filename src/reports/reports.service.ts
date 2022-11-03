@@ -12,8 +12,11 @@ export class ReportsService {
     private repository: Repository<Report>,
   ) {}
 
-  async findAll(): Promise<GetReportDto[]> {
-    return this.repository.find();
+  async findAll(): Promise<Report[]> {
+    return this.repository
+      .createQueryBuilder('report')
+      .leftJoinAndSelect(`${Report.ENTITY_ALIAS}.user`, 'u')
+      .getRawMany();
   }
 
   async findById(id: string): Promise<GetReportDto> {

@@ -7,10 +7,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  RelationId,
 } from 'typeorm';
 
-@Entity()
+@Entity(Report.ENTITY_ALIAS)
 export class Report extends BaseEntity {
+  static readonly ENTITY_ALIAS = 'report';
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,6 +25,9 @@ export class Report extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.reports)
   user: User;
+
+  @RelationId((report: Report) => report.user)
+  userId: string;
 
   @CreateDateColumn()
   createdAt: Date;

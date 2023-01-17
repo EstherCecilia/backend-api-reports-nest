@@ -10,7 +10,6 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DATABASE: nestjs
       POSTGRES_USER: pguser
       POSTGRES_PASSWORD: pgpassword
 

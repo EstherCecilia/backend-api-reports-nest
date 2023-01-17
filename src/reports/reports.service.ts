@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateReportDto } from './dtos/create-report.dto';
 import { GetReportDto } from './dtos/get-report.dto';
 import { Report } from './models/report.entity';
@@ -12,10 +12,13 @@ export class ReportsService {
     private repository: Repository<Report>,
   ) {}
 
+  protected queryBuilder(): SelectQueryBuilder<Report> {
+    return this.repository.createQueryBuilder('report');
+  }
+
   async findAll(): Promise<Report[]> {
-    return this.repository
-      .createQueryBuilder('report')
-      .leftJoinAndSelect(`${Report.ENTITY_ALIAS}.user`, 'u')
+    return this.queryBuilder()
+      .innerJoinAndSelect(`${Report.ENTITY_ALIAS}.user`, 'u')
       .getRawMany();
   }
 
@@ -23,21 +26,19 @@ export class ReportsService {
     return this.repository.findOneBy({ id });
   }
 
-  async update(id: string, createReportDto: CreateReportDto): Promise<Report> {
-    const report = await this.repository.findOneBy({ id });
-
-    const toSave = this.repository.create({
-      ...report,
-      ...createReportDto,
-    });
-
-    return this.repository.save(toSave);
+  async update(id: string, createReportDto: CreateReportDto): Promise<void> {
+    await this.queryBuilder()
+      .update()
+      .set(createReportDto)
+      .where({ id })
+      .execute();
   }
 
-  async create(createReportDto: CreateReportDto): Promise<Report> {
-    const toSave = this.repository.create({
-      ...createReportDto,
-    });
-    return this.repository.save(toSave);
+  async create(createReportDto: CreateReportDto): Promise<void> {
+    await this.queryBuilder()
+      .insert()
+      .into(Report)
+      .values([createReportDto])
+      .execute();
   }
 }

@@ -18,6 +18,12 @@ export class Admin extends BaseEntity {
   @Column({ nullable: false, type: 'varchar' })
   password: string;
 
+  @Column({ nullable: false, type: 'varchar' })
+  email: string;
+
+  @Column({ nullable: true, type: 'varchar' })
+  cellphone: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

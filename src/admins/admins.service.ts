@@ -18,6 +18,8 @@ export class AdminsService {
     const userToSave = this.repository.create({
       username: user.username,
       password: user.password,
+      email: user.email,
+      cellphone: user.cellphone,
     });
 
     return this.repository.save(userToSave);

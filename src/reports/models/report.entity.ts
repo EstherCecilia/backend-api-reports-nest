@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   RelationId,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity(Report.ENTITY_ALIAS)
@@ -23,10 +24,11 @@ export class Report extends BaseEntity {
   @Column({ nullable: false, type: 'varchar' })
   description: string;
 
-  @ManyToOne(() => User, (user) => user.reports)
+  @ManyToOne(() => User, (user) => user.reports, {})
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @RelationId((report: Report) => report.user)
+  @Column('uuid', { nullable: false, name: 'user_id' })
   userId: string;
 
   @CreateDateColumn()

@@ -38,9 +38,8 @@ export class ReportsController {
     @Param('id') id: string,
     @Body() updateReportDto: UpdateReportDto,
   ): Promise<ReturnReportDto> {
-    const report = await this.reportsService.update(id, updateReportDto);
+    await this.reportsService.update(id, updateReportDto);
     return {
-      report,
       message: 'Laudo atualizado com sucesso',
     };
   }
@@ -50,9 +49,8 @@ export class ReportsController {
   async createReport(
     @Body(ValidationPipe) createReportDto: CreateReportDto,
   ): Promise<ReturnReportDto> {
-    const report = await this.reportsService.create(createReportDto);
+    await this.reportsService.create(createReportDto);
     return {
-      report,
       message: 'Laudo cadastrado com sucesso',
     };
   }

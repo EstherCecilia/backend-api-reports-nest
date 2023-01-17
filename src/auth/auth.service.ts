@@ -42,9 +42,11 @@ export class AuthService {
   }
 
   async login(loginUser: any) {
-    const payload = loginUser;
+    const user = await Admin.findOneBy({ username: loginUser.username });
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(loginUser),
+      auth: user,
     };
   }
 }
